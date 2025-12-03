@@ -74,8 +74,8 @@ public class RoomService {
             throw new CustomException("방을 삭제할 권한이 없습니다");
         }
 
-        room.setIsActive(false);
-        roomRepository.save(room);
+        // Hard Delete: MongoDB에서 완전히 삭제
+        roomRepository.delete(room);
     }
 
     public List<RoomResponse> getRoomsByUserId(String userId) {

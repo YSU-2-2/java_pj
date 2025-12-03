@@ -457,8 +457,8 @@
 
                 if (response.ok) {
                     showMessage('방에 입장했습니다!', 'success');
-                    // 추후 캔버스 페이지로 이동
-                    // setTimeout(() => window.location.href = `/canvas.html?roomId=${roomId}`, 1000);
+                    // 캔버스 페이지로 이동
+                    setTimeout(() => window.location.href = `/canvas.html?roomId=${roomId}`, 1000);
                 } else {
                     const error = await response.json();
                     showMessage(error.message || '방 입장에 실패했습니다.', 'error');
