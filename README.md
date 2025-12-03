@@ -54,6 +54,7 @@ cloud-drawing-app/
 
 # 애플리케이션 실행
 ./gradlew bootRun
+./gradlew.bat bootRun
 ```
 
 서버는 기본적으로 `http://localhost:8080`에서 실행됩니다.
