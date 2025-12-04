@@ -16,7 +16,8 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
-            overflow: hidden;
+            /* 수정: 창 크기가 작아지면 스크롤이 생기도록 변경 */
+            overflow: auto;
         }
 
         .header {
@@ -79,7 +80,8 @@
 
         .main-container {
             display: flex;
-            height: calc(100vh - 60px);
+            /* 수정: 화면 높이보다 내용이 길어지면 늘어나도록 min-height 사용 */
+            min-height: calc(100vh - 60px);
         }
 
         .toolbar {
@@ -115,6 +117,15 @@
         .tool-btn.active {
             border-color: #667eea;
             background: #667eea;
+            color: white;
+        }
+
+        .tool-btn.clear-btn {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        .tool-btn.clear-btn:hover {
+            background: #dc3545;
             color: white;
         }
 
@@ -157,6 +168,9 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            /* 수정: 캔버스 크기가 화면보다 클 때 스크롤 허용 */
+            overflow: auto; 
         }
 
         #drawingCanvas {
@@ -164,6 +178,8 @@
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             cursor: crosshair;
+            /* 캔버스 크기가 고정되어 있으므로 flex item이 줄어들지 않도록 설정 */
+            flex-shrink: 0; 
         }
 
         .sidebar {
@@ -195,6 +211,8 @@
             padding: 10px;
             background: #f8f9fa;
             border-radius: 8px;
+            /* 채팅창 최대 높이 제한 (스크롤 가능하게) */
+            max-height: 400px; 
         }
 
         .chat-message {
@@ -287,6 +305,65 @@
             color: #6c757d;
             text-align: center;
         }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            animation: fadeInOut 3s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .remote-cursor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1000;
+            transition: transform 0.1s linear;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cursor-icon {
+            width: 0; 
+            height: 0; 
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 16px solid; 
+            transform: rotate(-25deg) translateX(-5px);
+        }
+
+        .cursor-label {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            margin-top: 2px;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -301,13 +378,18 @@
     </div>
 
     <div class="main-container">
-        <!-- 도구 모음 -->
         <div class="toolbar">
             <button class="tool-btn active" data-tool="pen" title="펜">✏️</button>
             <button class="tool-btn" data-tool="line" title="직선">📏</button>
             <button class="tool-btn" data-tool="rect" title="사각형">▭</button>
             <button class="tool-btn" data-tool="circle" title="원">⭕</button>
             <button class="tool-btn" data-tool="eraser" title="지우개">🧹</button>
+            
+            <div class="divider"></div>
+            
+            <button class="tool-btn" onclick="undo()" title="실행 취소">↩️</button>
+            <button class="tool-btn" onclick="redo()" title="다시 실행">↪️</button>
+            <button class="tool-btn clear-btn" onclick="clearCanvas()" title="전체 지우기">🗑️</button>
 
             <div class="divider"></div>
 
@@ -325,12 +407,11 @@
             </div>
         </div>
 
-        <!-- 캔버스 -->
-        <div class="canvas-container">
+        <div class="canvas-container" id="canvasContainer">
             <canvas id="drawingCanvas" width="1200" height="700"></canvas>
+            <div id="cursorLayer"></div>
         </div>
 
-        <!-- 사이드바 (채팅 + 참여자) -->
         <div class="sidebar">
             <div class="chat-container">
                 <div class="chat-header">채팅</div>
@@ -341,16 +422,13 @@
                 </div>
             </div>
             <div class="participants-container">
-                <div class="participants-header">참여자</div>
-                <div class="participant-list" id="participantList">
-                    <div class="participant">
-                        <div class="participant-dot"></div>
-                        <span>나</span>
-                    </div>
-                </div>
+                <div class="participants-header">참여자 목록 (<span id="participantCount">1</span>)</div>
+                <div class="participant-list" id="participantList"></div>
             </div>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <script src="canvas.js"></script>
 </body>

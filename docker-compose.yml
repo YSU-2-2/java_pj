@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: drawing-app
+    ports:
+      - "8080:8080"
+    environment:
+      # 필요 시 환경 변수 오버라이드 (예: 로컬 DB 사용 시)
+      # SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/drawing-app
+      - SERVER_PORT=8080
+    depends_on:
+      - mongo # mongo 컨테이너가 뜬 후 실행
+    restart: always
+
+  mongo:
+    image: mongo:latest
+    container_name: drawing-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+volumes:
+  mongo-data:

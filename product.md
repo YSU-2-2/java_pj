@@ -166,22 +166,22 @@
     - ✅ GlobalExceptionHandler 구현됨
     - ✅ WebSocket 재연결 로직 있음
 
-### Phase 10: 테스트 및 배포 ⏳ (미구현)
-41. ⏳ 단위 테스트 작성
-    - Service 레이어 테스트
-42. ⏳ 통합 테스트
-    - API 엔드포인트 테스트
-    - WebSocket 연결 테스트
-43. ⏳ 프론트엔드 빌드 최적화
-44. ⏳ Docker 컨테이너화 (선택)
-    - Dockerfile 작성
-    - docker-compose.yml 작성
-45. ⏳ AWS EC2 또는 클라우드 플랫폼에 배포
-    - 환경 변수 설정
-    - ✅ MongoDB Atlas 이미 사용 중
-46. ⏳ 성능 테스트
-    - 동시 접속자 테스트
-    - 네트워크 지연 테스트
+    ### Phase 10: 테스트 및 배포 ⏳ (미구현)
+    41. ⏳ 단위 테스트 작성
+        - Service 레이어 테스트
+    42. ⏳ 통합 테스트
+        - API 엔드포인트 테스트
+        - WebSocket 연결 테스트
+    43. ⏳ 프론트엔드 빌드 최적화
+    44. ⏳ Docker 컨테이너화 (선택)
+        - Dockerfile 작성
+        - docker-compose.yml 작성
+    45. ⏳ AWS EC2 또는 클라우드 플랫폼에 배포
+        - 환경 변수 설정
+        - ✅ MongoDB Atlas 이미 사용 중
+    46. ⏳ 성능 테스트
+        - 동시 접속자 테스트
+        - 네트워크 지연 테스트
 
 ## 4. 데이터베이스 스키마
 
