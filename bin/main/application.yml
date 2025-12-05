@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: cloud-drawing-app
+  data:
+    mongodb:
+      uri: mongodb+srv://admin:rjhvah6UlhUlnGSX@drawing-app.vy7ew14.mongodb.net/drawing-app?retryWrites=true&w=majority
+      database: drawing-app
+
+server:
+  port: 8080
+
+# DynamoDB 설정
+# aws:
+#   dynamodb:
+#     endpoint: http://localhost:8000
+#     region: ap-northeast-2
+
+# AWS S3 설정 (추후 설정)
+# aws:
+#   s3:
+#     bucket-name: your-bucket-name
+#     region: ap-northeast-2
+#     access-key: ${AWS_ACCESS_KEY}
+#     secret-key: ${AWS_SECRET_KEY}
+
+# WebSocket 설정
+websocket:
+  allowed-origins: "*"
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.cloudproject.drawing: DEBUG
