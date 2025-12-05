@@ -14,5 +14,9 @@ COPY --from=builder /app/build/libs/*.jar app.jar
 # 포트 노출
 EXPOSE 8080
 
-# 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# SSL/TLS 설정을 포함한 실행 명령어
+ENTRYPOINT ["java", \
+    "-Djdk.tls.client.protocols=TLSv1.2", \
+    "-Djavax.net.ssl.trustStoreType=JKS", \
+    "-Djdk.tls.trustNameService=true", \
+    "-jar", "app.jar"]
