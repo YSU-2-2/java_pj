@@ -3,7 +3,8 @@ spring:
     name: cloud-drawing-app
   data:
     mongodb:
-      uri: mongodb+srv://admin:rjhvah6UlhUlnGSX@drawing-app.vy7ew14.mongodb.net/drawing-app?retryWrites=true&w=majority&tls=true&tlsAllowInvalidHostnames=true
+      # 접속 주소는 환경변수 MONGODB_URI로 주입 (코드에 계정·비밀번호를 쓰지 않는다)
+      uri: ${MONGODB_URI:mongodb://localhost:27017/drawing-app}
       database: drawing-app
 
 server:

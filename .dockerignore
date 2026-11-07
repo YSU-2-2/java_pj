@@ -1,0 +1,11 @@
+.git
+.gradle
+build
+bin
+.claude
+.idea
+.vscode
+.DS_Store
+*.log
+.env
+.env.*
